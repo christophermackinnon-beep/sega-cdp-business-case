@@ -786,15 +786,6 @@
     50% { box-shadow: 0 0 25px var(--sega-blue-glow), 0 0 50px var(--sega-blue-glow); }
   }
 
-  /* License input in profile */
-  .license-card {
-    border-color: var(--neon-green) !important;
-    box-shadow: 0 0 10px var(--neon-green-glow);
-  }
-  .license-card input {
-    color: var(--neon-green) !important;
-    text-shadow: 0 0 8px var(--neon-green-glow) !important;
-  }
 
   /* Narrative panels */
   .narrative-panel {
@@ -932,14 +923,6 @@
         <span class="suffix">/ YEAR</span>
       </div>
     </div>
-    <div class="stat-card license-card">
-      <div class="stat-label">ZEOTAP LICENSE COST</div>
-      <div class="stat-input-wrap">
-        <span class="prefix">&pound;</span>
-        <input type="text" data-key="zeotapLicense" data-type="currency" value="150,000" placeholder="150,000">
-        <span class="suffix">/ YEAR</span>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -977,12 +960,6 @@
       <div>
         <div class="total-label">TOTAL ANNUAL BENEFIT</div>
         <div class="total-value" id="totalValue">-</div>
-      </div>
-    </div>
-    <div class="roi-display">
-      <div>
-        <div class="roi-label">COMBO MULTIPLIER</div>
-        <div class="roi-multiplier" id="roiValue">-</div>
       </div>
     </div>
   </div>
@@ -1264,24 +1241,7 @@
       <div class="gc-label">TOTAL BENEFIT</div>
       <div class="gc-value" id="gcBenefit">-</div>
     </div>
-    <div class="gc-card cost">
-      <div class="gc-label">LICENSE COST</div>
-      <div class="gc-value" id="gcCost">-</div>
-    </div>
-    <div class="gc-card roi-card">
-      <div class="gc-label">ROI MULTIPLIER</div>
-      <div class="gc-value" id="gcRoi">-</div>
-    </div>
   </div>
-  <div class="health-bar-wrap">
-    <div class="health-bar-label">
-      <span>LICENSE COST</span>
-      <span>TOTAL BENEFIT</span>
-    </div>
-    <div class="health-bar">
-      <div class="hb-fill" id="hbFill" style="width:0%"></div>
-      <div class="hb-cost" id="hbCost" style="width:0%"></div>
-    </div>
   </div>
 </section>
 
@@ -1302,7 +1262,6 @@ const C = {
   conversionRate: 0.02,
   churnRate: 0.40,
   uniqueVisitors: 18000000,
-  zeotapLicense: 150000,
   // Model 1
   costPerMediaPerson: 2,
   suppressionUpliftCDP: 0.08,
@@ -1540,7 +1499,6 @@ function recalcAll() {
   const retain = m3.incremental;
   const efficiency = m4.total;
   const total = acquire + grow + retain + efficiency;
-  const roi = C.zeotapLicense > 0 ? total / C.zeotapLicense : 0;
 
   // Render tables
   renderM1(m1);
@@ -1584,18 +1542,9 @@ function recalcAll() {
   // Totals
   document.getElementById('totalValue').textContent = fmtGBP(total);
   document.getElementById('headerTotal').textContent = fmtGBP(total);
-  document.getElementById('roiValue').textContent = roi.toFixed(1) + 'x';
 
   // Game complete
   document.getElementById('gcBenefit').textContent = fmtGBP(total);
-  document.getElementById('gcCost').textContent = fmtGBP(C.zeotapLicense);
-  document.getElementById('gcRoi').textContent = roi.toFixed(1) + 'x';
-
-  // Health bar
-  if (total > 0) {
-    document.getElementById('hbFill').style.width = '100%';
-    document.getElementById('hbCost').style.width = Math.min((C.zeotapLicense / total * 100), 100) + '%';
-  }
 }
 
 // ─── INIT ───
