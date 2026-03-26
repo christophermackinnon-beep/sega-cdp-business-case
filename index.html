@@ -985,9 +985,15 @@
     </div>
     <div class="score-card grow">
       <div class="score-level">LEVEL 2</div>
-      <div class="score-name">Grow</div>
+      <div class="score-name">Grow (Cross-Sell)</div>
       <div class="score-value" id="scoreGrow">-</div>
       <div class="score-bar"><div class="score-bar-fill" id="barGrow" style="width:0%"></div></div>
+    </div>
+    <div class="score-card grow">
+      <div class="score-level">BONUS LEVEL</div>
+      <div class="score-name">DLC Trigger</div>
+      <div class="score-value" id="scoreGrow2b">-</div>
+      <div class="score-bar"><div class="score-bar-fill" id="barGrow2b" style="width:0%"></div></div>
     </div>
     <div class="score-card retain">
       <div class="score-level">LEVEL 3</div>
@@ -1013,6 +1019,7 @@
   <div class="stacked-bar" id="stackedBar">
     <div style="background:var(--acquire); width:0%;" id="stackAcquire"></div>
     <div style="background:var(--grow); width:0%;" id="stackGrow"></div>
+    <div style="background:var(--grow); width:0%; opacity:0.65;" id="stackGrow2b"></div>
     <div style="background:var(--retain); width:0%;" id="stackRetain"></div>
     <div style="background:var(--efficiency); width:0%;" id="stackEfficiency"></div>
   </div>
@@ -1153,6 +1160,70 @@
         <details class="narrative-panel">
           <summary>INTEL BRIEFING</summary>
           <p>Seven studios, seven player bases — massive cross-brand opportunity. A Football Manager player has never been shown a Two Point Campus recommendation. A Creative Assembly veteran hasn't been introduced to Amplitude's Humankind. A CDP creates a unified player ID across all studios for cross-brand lifecycle marketing.</p>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BONUS LEVEL: BEHAVIOURAL TRIGGER — DLC/IAP CONVERSION ═══ -->
+<section class="model-section">
+  <div class="model-card">
+    <div class="model-header" onclick="toggleModel('m2b')">
+      <div class="model-header-left">
+        <span class="level-badge grow">BONUS LEVEL</span>
+        <div>
+          <div class="model-title">BEHAVIOURAL TRIGGER — IN-GAME PURCHASES</div>
+          <div class="model-desc">DLC/IAP conversion via CDP-timed triggers</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;">
+        <span class="model-total-badge" id="m2bTotal">-</span>
+        <span class="chevron open" id="chevM2b">&#9660;</span>
+      </div>
+    </div>
+    <div class="model-body" id="bodyM2b">
+      <div class="model-inputs">
+        <div class="model-inputs-title">TUNE PARAMETERS</div>
+        <div class="mini-input" data-tooltip="Players who own a Sega title but haven't yet bought all available DLC. ~33% of the 15M addressable base. Excludes players who've already purchased everything available. Covers Total War (8-12 DLC packs per title), Two Point (similar pattern), and FM Mobile IAP.">
+          <span class="mi-label">Eligible Players (DLC Available)</span>
+          <input type="text" data-key="eligibleDLCPlayers" data-type="number" value="5,000,000">
+          <span class="mi-suffix">PLAYERS</span>
+        </div>
+        <div class="mini-input" data-tooltip="Baseline annual conversion rate of eligible players who purchase DLC without CDP-timed triggers. 8% reflects organic discovery through store browsing, general email blasts, and platform promotions — uninformed timing.">
+          <span class="mi-label">Organic DLC Conversion Rate</span>
+          <input type="text" data-key="organicDLCConversionRate" data-type="percent" value="8">
+          <span class="mi-suffix">%</span>
+        </div>
+        <div class="mini-input" data-tooltip="Relative uplift from CDP behavioural triggers. A player who just completed the main campaign has 3-5× higher DLC purchase probability in the next 48 hours. 20% is conservative, based on EA/Activision CDP deployments where trigger messaging achieves 2-3× baseline.">
+          <span class="mi-label">CDP Trigger Uplift</span>
+          <input type="text" data-key="cdpTriggerUpliftLow" data-type="percent" value="20">
+          <span class="mi-suffix">%</span>
+        </div>
+        <div class="mini-input" data-tooltip="Blended average transaction value across DLC types: faction packs £7-12, expansion passes £20-30, in-game currency bundles £5-15. £13 is the weighted blend across Total War, Two Point and Football Manager.">
+          <span class="mi-label">Avg DLC/IAP Transaction Value</span>
+          <input type="text" data-key="avgDLCTransactionValue" data-type="currency" value="13">
+          <span class="mi-suffix">£</span>
+        </div>
+        <div class="mini-input" data-tooltip="Share of incremental revenue directly attributable to CDP-triggered actions. Higher than Cross-Sell (UC2) because the trigger is more directly CDP-driven — the CDP identifies the moment, selects the offer, and fires the message. Also suppresses players who already own the DLC.">
+          <span class="mi-label">CDP Attribution Factor</span>
+          <input type="text" data-key="cdpAttributionFactor" data-type="percent" value="35">
+          <span class="mi-suffix">%</span>
+        </div>
+      </div>
+      <div class="scenario-panel">
+        <table class="scenario-table" id="tableM2b">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+        <div class="incremental-badge">
+          <span class="ib-label">CDP-ATTRIBUTED VALUE</span>
+          <span class="ib-value" id="incM2b">-</span>
+        </div>
+        <details class="narrative-panel">
+          <summary>INTEL BRIEFING</summary>
+          <p>Timing is everything for IAP conversion. A player who just completed the main campaign in a Total War title has a 3-5× higher DLC purchase probability in the 48 hours after completion. The same applies to Football Manager players who hit a tactical ceiling, or Two Point players who unlock everything in the base game. Without a CDP, Sega cannot see that moment and act on it.</p>
+          <p style="margin-top:8px;">The CDP does three things mParticle alone cannot: (1) unifies behavioural signals — session depth, achievements, content completion, in-game store visits — into a single player profile to identify the trigger moment; (2) fires personalised offers at the right moment via email, push, or in-game — not a blast campaign, but the right DLC for this player right now; (3) suppresses players who already own the DLC, which is basic but expensive to get wrong without unified identity.</p>
         </details>
       </div>
     </div>
@@ -1324,6 +1395,12 @@ const C = {
   shareIdentifiedBaseline: 0.10,
   shareIdentifiedCDP: 0.20,
   shareIdentifiedCDPAB: 0.25,
+  // Model 2b: Behavioural Trigger (DLC/IAP)
+  eligibleDLCPlayers: 5000000,
+  organicDLCConversionRate: 0.08,
+  cdpTriggerUpliftLow: 0.20,
+  avgDLCTransactionValue: 13,
+  cdpAttributionFactor: 0.35,
   // Model 3
   churnReductionPercent: 0.005,
   reacquisitionRate: 0.30,
@@ -1378,8 +1455,9 @@ document.addEventListener('input', function(e) {
 
 // ─── MODEL COLLAPSE ───
 function toggleModel(id) {
-  const body = document.getElementById('body' + id.charAt(0).toUpperCase() + id.slice(1));
-  const chev = document.getElementById('chev' + id.charAt(0).toUpperCase() + id.slice(1));
+  const suffix = id === 'm2b' ? 'M2b' : id.charAt(0).toUpperCase() + id.slice(1);
+  const body = document.getElementById('body' + suffix);
+  const chev = document.getElementById('chev' + suffix);
   body.classList.toggle('collapsed');
   chev.classList.toggle('open');
 }
@@ -1423,6 +1501,16 @@ function calcM2() {
   });
   const incremental = results[1].revenue - results[0].revenue;
   return { scenarios, results, incremental };
+}
+
+// ─── MODEL 2B: BEHAVIOURAL TRIGGER (DLC/IAP) ───
+function calcM2b() {
+  const eligible = C.eligibleDLCPlayers;
+  const baseConversions = eligible * C.organicDLCConversionRate;
+  const incrementalConversions = baseConversions * C.cdpTriggerUpliftLow;
+  const grossRevenue = incrementalConversions * C.avgDLCTransactionValue;
+  const attributed = grossRevenue * C.cdpAttributionFactor;
+  return { eligible, baseConversions, incrementalConversions, grossRevenue, attributed };
 }
 
 // ─── MODEL 3: RETENTION ───
@@ -1479,6 +1567,22 @@ function renderM2(data) {
   ];
   const totalRow = { label: 'INCREMENTAL REVENUE', key: 'revenue', fmt: fmtGBP };
   renderTable('tableM2', scenarios, results, rows, totalRow);
+}
+
+function renderM2b(data) {
+  const table = document.getElementById('tableM2b');
+  table.innerHTML = `
+    <thead><tr>
+      <th style="text-align:left">METRIC</th>
+      <th class="highlight">WITH CDP</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>Eligible Players (DLC Available)</td><td class="highlight">${fmtNum(data.eligible)}</td></tr>
+      <tr><td>Organic DLC Conversions (Annual)</td><td class="highlight">${fmtNum(data.baseConversions)}</td></tr>
+      <tr><td>Incremental Conversions (CDP Trigger)</td><td class="highlight">${fmtNum(data.incrementalConversions)}</td></tr>
+      <tr><td>Gross Revenue Uplift</td><td class="highlight">${fmtGBP(data.grossRevenue)}</td></tr>
+      <tr class="total-row"><td>CDP-ATTRIBUTED VALUE</td><td class="highlight">${fmtGBP(data.attributed)}</td></tr>
+    </tbody>`;
 }
 
 function renderM3(data) {
@@ -1538,43 +1642,50 @@ function renderTable(tableId, scenarios, results, rows, totalRow) {
 function recalcAll() {
   const m1 = calcM1();
   const m2 = calcM2();
+  const m2b = calcM2b();
   const m3 = calcM3();
   const m4 = calcM4();
 
   const acquire = m1.incremental;
   const grow = m2.incremental;
+  const grow2b = m2b.attributed;
   const retain = m3.incremental;
   const efficiency = m4.total;
-  const total = acquire + grow + retain + efficiency;
+  const total = acquire + grow + grow2b + retain + efficiency;
 
   // Render tables
   renderM1(m1);
   renderM2(m2);
+  renderM2b(m2b);
   renderM3(m3);
   renderM4(m4);
 
   // Model totals
   document.getElementById('m1Total').textContent = fmtGBP(acquire);
   document.getElementById('m2Total').textContent = fmtGBP(grow);
+  document.getElementById('m2bTotal').textContent = fmtGBP(grow2b);
   document.getElementById('m3Total').textContent = fmtGBP(retain);
   document.getElementById('m4Total').textContent = fmtGBP(efficiency);
 
   // Incrementals
   document.getElementById('incM1').textContent = fmtGBP(acquire);
   document.getElementById('incM2').textContent = fmtGBP(grow);
+  document.getElementById('incM2b').textContent = fmtGBP(grow2b);
   document.getElementById('incM3').textContent = fmtGBP(retain);
   document.getElementById('incM4').textContent = fmtGBP(efficiency);
 
   // Scoreboard
   document.getElementById('scoreAcquire').textContent = fmtGBP(acquire);
   document.getElementById('scoreGrow').textContent = fmtGBP(grow);
+  document.getElementById('scoreGrow2b').textContent = fmtGBP(grow2b);
   document.getElementById('scoreRetain').textContent = fmtGBP(retain);
   document.getElementById('scoreEfficiency').textContent = fmtGBP(efficiency);
 
   // Score bars (proportional to total)
-  const max = Math.max(acquire, grow, retain, efficiency, 1);
+  const max = Math.max(acquire, grow, grow2b, retain, efficiency, 1);
   document.getElementById('barAcquire').style.width = (acquire / max * 100) + '%';
   document.getElementById('barGrow').style.width = (grow / max * 100) + '%';
+  document.getElementById('barGrow2b').style.width = (grow2b / max * 100) + '%';
   document.getElementById('barRetain').style.width = (retain / max * 100) + '%';
   document.getElementById('barEfficiency').style.width = (efficiency / max * 100) + '%';
 
@@ -1582,6 +1693,7 @@ function recalcAll() {
   if (total > 0) {
     document.getElementById('stackAcquire').style.width = (acquire / total * 100) + '%';
     document.getElementById('stackGrow').style.width = (grow / total * 100) + '%';
+    document.getElementById('stackGrow2b').style.width = (grow2b / total * 100) + '%';
     document.getElementById('stackRetain').style.width = (retain / total * 100) + '%';
     document.getElementById('stackEfficiency').style.width = (efficiency / total * 100) + '%';
   }
