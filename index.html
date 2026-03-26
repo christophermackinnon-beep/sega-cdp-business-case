@@ -223,7 +223,7 @@
     border-radius: 4px;
     padding: 16px 20px;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     transition: border-color 0.3s, box-shadow 0.3s;
   }
   .stat-card:focus-within {
@@ -414,7 +414,7 @@
   .model-card {
     background: var(--bg-card);
     border-radius: 8px;
-    overflow: hidden;
+    overflow: visible;
     position: relative;
   }
   .model-header {
@@ -806,6 +806,53 @@
     cursor: pointer;
     margin-bottom: 8px;
   }
+
+  /* ─── TOOLTIPS ─── */
+  .stat-card, .mini-input {
+    position: relative;
+  }
+  .stat-card[data-tooltip]:hover::after,
+  .mini-input[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    z-index: 1000;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 280px;
+    padding: 12px 14px;
+    background: linear-gradient(135deg, #0a1628 0%, #0d1f3c 100%);
+    border: 1px solid var(--sega-blue);
+    border-radius: 6px;
+    box-shadow: 0 0 20px rgba(0,96,232,0.3), 0 4px 20px rgba(0,0,0,0.6);
+    color: #c8d6e8;
+    font-family: 'Manrope', sans-serif;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0;
+    text-transform: none;
+    font-style: normal;
+    font-weight: 400;
+    pointer-events: none;
+    animation: tooltipFadeIn 0.2s ease;
+  }
+  .stat-card[data-tooltip]:hover::before,
+  .mini-input[data-tooltip]:hover::before {
+    content: '';
+    position: absolute;
+    z-index: 1001;
+    bottom: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--sega-blue);
+    pointer-events: none;
+    animation: tooltipFadeIn 0.2s ease;
+  }
+  @keyframes tooltipFadeIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
 </style>
 </head>
 <body class="pixel-grid">
@@ -879,14 +926,14 @@
 <section class="profile-section">
   <div class="section-title">SELECT YOUR STATS</div>
   <div class="profile-grid">
-    <div class="stat-card">
+    <div class="stat-card" data-tooltip="Total registered players across all SEGA studios globally. Sourced from public filings and annual reports. This is the addressable base all models calculate against.">
       <div class="stat-label">PLAYER BASE (GLOBAL)</div>
       <div class="stat-input-wrap">
         <input type="text" data-key="playerBase" data-type="integer" value="13,500,000" placeholder="13,500,000">
         <span class="suffix">PLAYERS</span>
       </div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" data-tooltip="Average revenue per player per year across all titles. Blended across premium, F2P, and DLC. Industry benchmark for mid-core publishers is £30-60. Calculated from SEGA Europe revenue / active player base.">
       <div class="stat-label">AVG REVENUE PER PLAYER</div>
       <div class="stat-input-wrap">
         <span class="prefix">&pound;</span>
@@ -894,7 +941,7 @@
         <span class="suffix">ARPP</span>
       </div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" data-tooltip="Average cost to acquire one new player through paid media. Gaming industry CPA ranges from £8-40 depending on genre and platform. Used in acquisition and retargeting models.">
       <div class="stat-label">COST PER ACQUISITION</div>
       <div class="stat-input-wrap">
         <span class="prefix">&pound;</span>
@@ -902,21 +949,21 @@
         <span class="suffix">CPA</span>
       </div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" data-tooltip="Percentage of website visitors who convert to a registered player or purchaser. 1-3% is standard for gaming. Used to calculate the revenue value of retargeting uplift.">
       <div class="stat-label">CONVERSION RATE</div>
       <div class="stat-input-wrap">
         <input type="text" data-key="conversionRate" data-type="percent" value="2" placeholder="2">
         <span class="suffix">%</span>
       </div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" data-tooltip="Percentage of active players lost each year. Gaming churn is notoriously high (30-50%) due to title lifecycles. Even a 0.5% reduction on this base represents significant retained revenue.">
       <div class="stat-label">ANNUAL CHURN RATE</div>
       <div class="stat-input-wrap">
         <input type="text" data-key="churnRate" data-type="percent" value="40" placeholder="40">
         <span class="suffix">%</span>
       </div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" data-tooltip="Annual unique visitors across all SEGA web properties. This is the retargeting-addressable audience — visitors who can be matched, suppressed, or retargeted via a CDP.">
       <div class="stat-label">UNIQUE WEBSITE VISITORS</div>
       <div class="stat-input-wrap">
         <input type="text" data-key="uniqueVisitors" data-type="integer" value="18,000,000" placeholder="18,000,000">
@@ -990,42 +1037,42 @@
     <div class="model-body" id="bodyM1">
       <div class="model-inputs">
         <div class="model-inputs-title">TUNE PARAMETERS</div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="Cost of serving ads to existing players who don't need acquisition messaging. With 7 studios and no unified identity, active Total War players get Football Manager ads. Industry waste benchmarks: £1.50-3.00 per player.">
           <span class="mi-label">Wasted Media Cost / Player</span>
           <input type="text" data-key="costPerMediaPerson" data-type="currency" value="2.00">
           <span class="mi-suffix">&pound;</span>
         </div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="Percentage of wasted ad spend recovered by suppressing known players from acquisition campaigns. CDP-only typically achieves 5-10% through first-party match. Conservative benchmark.">
           <span class="mi-label">Suppression Uplift (CDP)</span>
           <input type="text" data-key="suppressionUpliftCDP" data-type="percent" value="8">
           <span class="mi-suffix">%</span>
         </div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="Higher suppression with CDP + audience-based activation (e.g. LiveRamp, Meta CAPI). Extends match rates beyond first-party cookies into walled gardens. 10-15% is the proven range.">
           <span class="mi-label">Suppression Uplift (CDP+AB)</span>
           <input type="text" data-key="suppressionUpliftCDPAB" data-type="percent" value="12">
           <span class="mi-suffix">%</span>
         </div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="New player's first-year value as a percentage of the average ARPP. First purchases are typically lower (DLC, starter packs). 80% is a standard gaming industry assumption.">
           <span class="mi-label">First Purchase Value</span>
           <input type="text" data-key="firstPurchaseValuePercent" data-type="percent" value="80">
           <span class="mi-suffix">%</span>
         </div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="Share of website visitors who can be matched for retargeting without a CDP. Limited to basic cookie-based retargeting. 10% reflects typical browser match rates post-cookie deprecation.">
           <span class="mi-label">Retargeting Reach (Baseline)</span>
           <input type="text" data-key="retargetingReachBaseline" data-type="percent" value="10">
           <span class="mi-suffix">%</span>
         </div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="Retargeting reach with CDP identity resolution — first-party IDs, hashed emails, deterministic matching. 3x improvement over baseline is a conservative CDP benchmark.">
           <span class="mi-label">Retargeting Reach (CDP)</span>
           <input type="text" data-key="retargetingReachCDP" data-type="percent" value="30">
           <span class="mi-suffix">%</span>
         </div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="Maximum retargeting reach with CDP + audience-based enrichment partners. Extends reach into walled gardens and CTV. 45-50% represents best-in-class identity resolution.">
           <span class="mi-label">Retargeting Reach (CDP+AB)</span>
           <input type="text" data-key="retargetingReachCDPAB" data-type="percent" value="48">
           <span class="mi-suffix">%</span>
         </div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="Average CPM translated to per-user retargeting cost. Covers display, social, and programmatic channels. £0.30-0.80 is typical for gaming retargeting campaigns.">
           <span class="mi-label">Retargeting Cost / User</span>
           <input type="text" data-key="retargetingCostPerUser" data-type="currency" value="0.50">
           <span class="mi-suffix">&pound;</span>
@@ -1068,27 +1115,27 @@
     <div class="model-body" id="bodyM2">
       <div class="model-inputs">
         <div class="model-inputs-title">TUNE PARAMETERS</div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="Percentage of players exposed to cross-studio recommendations who convert to a second title. 1% is conservative — Netflix cross-content recommendations achieve 2-5%.">
           <span class="mi-label">Upsell Conversion Rate</span>
           <input type="text" data-key="xsellConversionRate" data-type="percent" value="1">
           <span class="mi-suffix">%</span>
         </div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="Revenue uplift when a player adopts a second SEGA title. 100% means they spend the equivalent of one more ARPP. Players engaged across 2+ titles typically have higher lifetime value.">
           <span class="mi-label">Avg Uplift per Player</span>
           <input type="text" data-key="avgUpliftPercent" data-type="percent" value="100">
           <span class="mi-suffix">%</span>
         </div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="Share of the player base that can be identified cross-studio without a CDP. Without unified identity, studios operate in silos — only 10% are matched via email or platform ID.">
           <span class="mi-label">Share Identified (Baseline)</span>
           <input type="text" data-key="shareIdentifiedBaseline" data-type="percent" value="10">
           <span class="mi-suffix">%</span>
         </div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="Cross-studio identification with CDP unifying player IDs across all 7 studios via deterministic matching (email, device ID, platform accounts). 20% is conservative for first-party resolution.">
           <span class="mi-label">Share Identified (CDP)</span>
           <input type="text" data-key="shareIdentifiedCDP" data-type="percent" value="20">
           <span class="mi-suffix">%</span>
         </div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="Maximum cross-studio identification with CDP + probabilistic matching and audience enrichment. Extends into anonymous-to-known player stitching. 25% reflects phased rollout.">
           <span class="mi-label">Share Identified (CDP+AB)</span>
           <input type="text" data-key="shareIdentifiedCDPAB" data-type="percent" value="25">
           <span class="mi-suffix">%</span>
@@ -1131,12 +1178,12 @@
     <div class="model-body" id="bodyM3">
       <div class="model-inputs">
         <div class="model-inputs-title">TUNE PARAMETERS</div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="Absolute percentage point reduction in annual churn enabled by CDP-driven lifecycle triggers (win-back campaigns, lapse prediction, engagement scoring). 0.5% is deliberately conservative — Databricks case study showed up to 40% retention uplift on select titles.">
           <span class="mi-label">Churn Reduction (CDP)</span>
           <input type="text" data-key="churnReductionPercent" data-type="percent" value="0.5">
           <span class="mi-suffix">%</span>
         </div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="Of churned players, the share you'd need to reacquire via paid media without a CDP. Each reacquired player costs the full CPA again. 30% reflects the typical 'win-back' budget allocation.">
           <span class="mi-label">Reacquisition Rate</span>
           <input type="text" data-key="reacquisitionRate" data-type="percent" value="30">
           <span class="mi-suffix">%</span>
@@ -1179,37 +1226,37 @@
     <div class="model-body" id="bodyM4">
       <div class="model-inputs">
         <div class="model-inputs-title">TUNE PARAMETERS</div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="Fully loaded hourly cost for a data/CRM team member. Includes salary, benefits, and overheads. £45/hr ≈ £90K total comp — standard for UK-based martech analysts.">
           <span class="mi-label">Cost per Hour</span>
           <input type="text" data-key="costPerHour" data-type="currency" value="45">
           <span class="mi-suffix">&pound;</span>
         </div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="Hours to build one audience segment manually — pulling data from Databricks, cleaning, formatting, pushing to Braze. With one data scientist across 7 studios, this is a real bottleneck.">
           <span class="mi-label">Hours per Audience (Manual)</span>
           <input type="text" data-key="hoursManual" data-type="decimal" value="20">
           <span class="mi-suffix">hrs</span>
         </div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="Percentage of manual audience build time saved by a CDP's visual segmentation UI. Zeotap's warehouse-native approach means no data movement — segment directly on Databricks. 80-90% savings is standard.">
           <span class="mi-label">Time Saving with CDP</span>
           <input type="text" data-key="timeSavingPercent" data-type="percent" value="85">
           <span class="mi-suffix">%</span>
         </div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="Total audience segments built per year across all studios and campaigns. 7 studios × ~50 audiences each = 350. Reflects actual campaign volume for a multi-brand publisher.">
           <span class="mi-label">Audiences per Year</span>
           <input type="text" data-key="audiencesPerYear" data-type="integer" value="350">
           <span class="mi-suffix">#</span>
         </div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="Annual Braze data point cost savings by pre-processing and filtering data upstream in the CDP before sending to Braze. Reduces redundant events, deduplicates profiles, and limits data point consumption.">
           <span class="mi-label">Braze Data Points Reduction</span>
           <input type="text" data-key="brazeDataPointsCost" data-type="currency" value="200,000">
           <span class="mi-suffix">&pound;</span>
         </div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="Current spend on third-party identity resolution tools that a CDP would replace. Zeotap's built-in ID resolution eliminates the need for separate identity vendors.">
           <span class="mi-label">Identity Resolution Cost</span>
           <input type="text" data-key="identityResolutionCost" data-type="currency" value="40,000">
           <span class="mi-suffix">&pound;</span>
         </div>
-        <div class="mini-input">
+        <div class="mini-input" data-tooltip="Cost of existing data activation tools/pipelines that would be consolidated into the CDP. Set to £0 if no separate activation layer is currently in use.">
           <span class="mi-label">Data Activation Cost</span>
           <input type="text" data-key="dataActivationCost" data-type="currency" value="0">
           <span class="mi-suffix">&pound;</span>
